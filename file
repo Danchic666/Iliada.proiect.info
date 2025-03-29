@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O călătorie în trecut</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/bryndan-write" rel="stylesheet">
+    <style>
+        /* Stiluri generale */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: twinkle 5s infinite;
+            z-index: -1;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: shine 3s infinite alternate, move 10s infinite linear;
+            z-index: -1;
+        }
+        @keyframes shine {
+            0% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+        @keyframes move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100vw, 100vh); }
+        }
+        .page {
+            display: none;
+            padding: 20px 50px;
+            min-height: 100vh;
+            background-image: url('https://via.placeholder.com/1920x1080?text=Univers'), url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-blend-mode: overlay;
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            transition: opacity 0.5s ease-in-out;
+            position: relative;
+            z-index: 1;
+        }
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+        h2 {
+            font-family: 'Caveat', cursive;
+            font-size: 5em;
+            background: linear-gradient(to right, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(255, 215, 0, 1); }
+            100% { text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+        }
+        p {
+            font-family: 'Bryndan Write', cursive;
+            font-size: 1.8em;
+            line-height: 1.8;
+            max-width: 1400px;
+            margin: 0 auto 30px;
+        }
+        button {
+            background-color: #FFD700;
+            color: #121212;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            margin: 15px;
+            position: relative;
+        }
+        button:hover {
+            background-color: #FFA500;
+            transform: scale(1.1);
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: -20px;
+        }
+        .quiz-question {
+            display: none;
+        }
+        .quiz-question.active {
+            display: block;
+        }
+        .quiz-question p {
+            font-size: 2.5em;
+        }
+        .quiz-question input[type="radio"] + label {
+            font-size: 2em;
+        }
+        #quiz .button-container {
+            margin-top: 50px;
+        }
+        #quiz-result {
+            font-size: 2em;
+            margin-top: 30px;
+        }
+        .decorative-image {
+            position: absolute;
+            opacity: 0.5;
+            z-index: 0;
+            width: 300px;
+        }
+        .top-left { top: 40px; left: 40px; width: 300px; }
+        .top-right { top: 40px; right: 40px; width: 300px; }
+        .bottom-left { bottom: 40px; left: 40px; width: 300px; }
+        .bottom-right { bottom: 40px; right: 40px; width: 300px; }
+        .credits {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Caveat', cursive;
+            font-size: 3em;
+            color: #FFD700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSqNFiWASDHJmcoYPCAErlrSKGj-hPxVhLolISNGaMI1BgCPsUp0GHSjireA6Sxf5YYEcyPuS_Thdo4k8IWMeJYmA" class="decorative-image top-left" alt="Decor">
+    <img src="https://cdn.tripster.ru/thumbs2/ffc2e4de-4874-11ed-8d1f-e2406ee26240.1220x600.jpeg" class="decorative-image top-right" alt="Decor">
+    <img src="https://naked-science.ru/wp-content/uploads/2022/09/giza-pyramids-built.jpg" class="decorative-image bottom-left" alt="Decor">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/El_Castillo%2C_Chich%C3%A9n_Itz%C3%A1.jpg/800px-El_Castillo%2C_Chich%C3%A9n_Itz%C3%A1.jpg" class="decorative-image bottom-right" alt="Decor">
+
+    <div id="intro" class="page active">
+        <h2>O călătorie în trecut</h2>
+        <p>Bine ai venit pe „O călătorie în trecut”! Acest site te va purta printr-o experiență fascinantă, explorând secretele dinozaurilor, misterele piramidelor egiptene, originile universului și enigmele civilizațiilor pierdute. Pregătește-te să descoperi informații detaliate, imagini captivante și un quiz interactiv care îți va testa cunoștințele. Acest proiect a fost elaborat pentru proiectul la limba română „Iliada”. Eu mult sper că o să vă placă și o să mă notați cu o notă înaltă! Apasă butonul de mai jos pentru a începe această aventură incredibilă!</p>
+        <div class="button-container">
+            <button onclick="showPage('dinozauri')">Începe călătoria</button>
+        </div>
+        <div class="credits">Elaborat de Arion Daniel</div>
+    </div>
+
+    <div id="dinozauri" class="page">
+        <div class="content" style="margin-top: -40px;">
+            <h2>Dinozaurii</h2>
+            <p>Dinozaurii au fost reptile magnifice care au dominat Pământul în era Mezozoică, între 252 și 66 de milioane de ani în urmă. Aceștia au apărut în Triasic, s-au diversificat în Jurasic și au atins apogeul în Cretacic. Dimensiunile lor variau enorm: de la micuțul Compsognathus, de mărimea unui pui, la uriașul Argentinosaurus, care putea atinge 30 de metri lungime și cântărea peste 70 de tone. Tyrannosaurus Rex, cu fălcile sale puternice capabile să zdrobească oase, și Brachiosaurus, cu gâtul său lung ce îi permitea să ajungă la frunzele copacilor înalți, sunt doar două exemple celebre. Fosilele lor, descoperite pe toate continentele, inclusiv în Antarctica, oferă o fereastră către o lume dispărută. Extincția lor, petrecută acum 66 de milioane de ani, este atribuită unui asteroid de 10 kilometri care a lovit peninsula Yucatan, provocând incendii masive, tsunami și un nor de praf ce a blocat soarele, ducând la colapsul ecosistemelor.</p>
+            <div class="button-container">
+                <button onclick="showPage('dinozauri-detail')">Mai multe informații</button>
+                <button onclick="showPage('piramide')">Următoarea pagină</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="dinozauri-detail" class="page">
+        <h2>Dinozaurii - Detalii</h2>
+        <p>Primii dinozauri, precum Eoraptor și Herrerasaurus, au apărut în Triasic, o perioadă marcată de recuperarea vieții după extincția Permiano-Triasică, cea mai devastatoare din istorie. În Jurasic, dinozaurii au devenit mai variați: Stegosaurus, cu plăcile sale dorsale distinctive, și Allosaurus, un prădător feroce, sunt exemple notabile. Cretacicul a adus specii spectaculoase precum Triceratops, cu coarnele sale impresionante, și Velociraptor, un vânător agil și inteligent. Dispariția lor a fost un eveniment catastrofal: asteroidul a generat un crater de 150 km lățime, numit Chicxulub, și a eliberat energie echivalentă cu miliarde de bombe atomice. Praful și cenușa au blocat lumina solară timp de ani, cauzând o iarnă globală care a ucis 75% din speciile de pe Pământ. Totuși, dinozaurii teropizi au supraviețuit sub forma păsărilor, descendenți direcți ai unor specii precum Archaeopteryx, care combina trăsături de reptilă și pasăre.</p>
+        <div class="button-container">
+            <button onclick="showPage('dinozauri')">Înapoi</button>
+        </div>
+    </div>
+
+    <div id="piramide" class="page">
+        <h2>Piramidele Egiptene</h2>
+        <p>Piramidele egiptene sunt monumente impresionante construite ca morminte pentru faraoni în timpul Regatului Vechi (2686-2181 î.Hr.). Cea mai renumită, Piramida lui Keops din Giza, finalizată în jurul anului 2560 î.Hr., a fost cea mai înaltă structură construită de om timp de peste 3.800 de ani, atingând 146 de metri. Construcția sa a implicat aproximativ 20.000 de muncitori care transportau blocuri de calcar și granit, fiecare cântărind în medie 2,5 tone, de-a lungul Nilului, apoi le ridicau folosind rampe și scripeți. Piramidele sunt aliniate cu o precizie incredibilă la punctele cardinale, reflectând cunoștințe avansate de astronomie și matematică. Ele simbolizau credința egiptenilor în viața de apoi, fiind concepute pentru a proteja trupul și spiritul faraonului în eternitate. Astăzi, sunt considerate una dintre cele șapte minuni ale lumii antice.</p>
+        <div class="button-container">
+            <button onclick="showPage('piramide-detail')">Mai multe informații</button>
+            <button onclick="showPage('univers')">Următoarea pagină</button>
+        </div>
+    </div>
+
+    <div id="piramide-detail" class="page">
+        <h2>Piramidele - Detalii</h2>
+        <p>Piramida lui Keops conține peste 2,3 milioane de blocuri de piatră, unele transportate de la 800 de kilometri distanță, din carierele de la Aswan. Constructorii foloseau rampe spiralate sau drepte, ajustate pe măsură ce piramida creștea, iar alinierea sa cu punctele cardinale are o eroare de doar 0,05 grade – o performanță uluitoare pentru acea vreme. Interiorul include Camera Regelui, cu un sarcofag de granit masiv, și Camera Reginei, conectate prin coridoare înguste. Deși jefuită în antichitate, piramida făcea parte dintr-un complex funerar vast, incluzând temple, alei și Marele Sfinx. Construcția sa a necesitat o organizare excepțională: muncitorii, hrăniți cu pâine și bere, lucrau în echipe rotative, iar logistica era coordonată de scribi și ingineri. Tehnologia lor rămâne un subiect de fascinație și studiu, demonstrând geniul civilizației egiptene.</p>
+        <div class="button-container">
+            <button onclick="showPage('piramide')">Înapoi</button>
+        </div>
+    </div>
+
+    <div id="univers" class="page">
+        <h2>Formarea Universului</h2>
+        <p>Universul s-a născut acum 13,8 miliarde de ani prin Big Bang, o expansiune bruscă ce a creat spațiul, timpul și materia. În primele fracțiuni de secundă, universul era incredibil de dens și fierbinte, cu temperaturi de trilioane de grade. După o perioadă de inflație cosmică rapidă, s-a răcit suficient încât, la 380.000 de ani de la Big Bang, să se formeze primii atomi de hidrogen și heliu – moment marcat de radiația cosmică de fond, detectabilă și astăzi. Stelele și galaxiile au început să se formeze după 100 de milioane de ani, iar universul continuă să se extindă, accelerat de energia întunecată. Astăzi, universul observabil are 93 de miliarde de ani-lumină în diametru și conține peste 2 trilioane de galaxii, fiecare cu miliarde de stele.</p>
+        <div class="button-container">
+            <button onclick="showPage('univers-detail')">Mai multe informații</button>
+            <button onclick="showPage('mistere')">Următoarea pagină</button>
+        </div>
+    </div>
+
+    <div id="univers-detail" class="page">
+        <h2>Universul - Detalii</h2>
+        <p>Big Bang-ul nu a fost o explozie într-un spațiu preexistent, ci expansiunea spațiului însuși. În primele momente, particulele fundamentale – quarkuri și electroni – erau într-o „supă” fierbinte, incapabile să se unească. După răcire, protonii și neutronii au format nuclee atomice, iar ulterior atomii completi. Primele stele s-au aprins în Epoca Reionizării, producând elemente grele (carbon, oxigen, fier) prin fuziune nucleară. Când aceste stele masive au explodat ca supernove, au împrăștiat materialul necesar formării planetelor, inclusiv Pământul. Universul este compus din 5% materie obișnuită, 25% materie întunecată (care influențează gravitația) și 70% energie întunecată (care accelerează expansiunea). Dovezi precum radiația cosmică și deplasarea spre roșu a galaxiilor susțin teoria Big Bang-ului.</p>
+        <div class="button-container">
+            <button onclick="showPage('univers')">Înapoi</button>
+        </div>
+    </div>
+
+    <div id="mistere" class="page">
+        <h2>Alte Misterele</h2>
+        <p>Civilizația Maya a înflorit în America Centrală între 2000 î.Hr. și 1500 d.Hr., renumită pentru piramidele sale, calendarul precis și scrierea hieroglifică. Orașe precum Tikal și Chichen Itza erau centre de putere, cu temple și observatoare astronomice. Totuși, în secolul al IX-lea, multe orașe din sudul regiunii au fost abandonate misterios. Teoriile includ secete severe, războaie interne sau supraexploatarea solului agricol. Deși civilizația nu a dispărut complet – descendenții mayașilor trăiesc și azi – declinul urban rămâne un enigma. Alte mistere fascinante includ dispariția civilizației Indus, cu orașele sale planificate, și construcția Stonehenge, un monument preistoric ale cărui scop și metode sunt încă dezbătute.</p>
+        <div class="button-container">
+            <button onclick="showPage('mistere-detail')">Mai multe informații</button>
+            <button onclick="showPage('quiz')">Începe quiz-ul</button>
+        </div>
+    </div>
+
+    <div id="mistere-detail" class="page">
+        <h2>Mistere - Detalii</h2>
+        <p>Mayașii au dezvoltat un calendar complex, combinând cicluri de 260 și 365 de zile, mai precis decât cel european al vremii, și au construit structuri precum El Castillo din Chichen Itza, aliniate cu evenimente astronomice. Declinul lor urban, între 800-900 d.Hr., este legat de o secetă masivă, evidențiată de analizele polenului din lacuri, care a durat decenii și a destabilizat agricultura. Războaiele și defrișările au amplificat criza, ducând la abandonarea orașelor. Civilizația Indus, dispărută în jurul anului 1900 î.Hr., avea sisteme de canalizare avansate, dar motivele colapsului său – schimbări climatice sau invazii – sunt neclare. Stonehenge, ridicat între 3000-2000 î.Hr., implică transportul pietrelor de 30 de tone pe sute de kilometri, ridicând întrebări despre tehnologia și scopul său ritualic.</p>
+        <div class="button-container">
+            <button onclick="showPage('mistere')">Înapoi</button>
+        </div>
+    </div>
+
+    <div id="quiz" class="page">
+        <h2>Quiz: Testează-ți cunoștințele!</h2>
+        <div id="quiz-container">
+            <div class="quiz-question active" id="q1">
+                <p>1. În ce perioadă au apărut primii dinozauri?</p>
+                <input type="radio" name="q1" value="a" id="q1a"><label for="q1a"> a) Jurasic</label><br>
+                <input type="radio" name="q1" value="b" id="q1b"><label for="q1b"> b) Triasic</label><br>
+                <input type="radio" name="q1" value="c" id="q1c"><label for="q1c"> c) Cretacic</label><br>
+            </div>
+            <div class="quiz-question" id="q2">
+                <p>2. Care este cea mai faimoasă piramidă egipteană?</p>
+                <input type="radio" name="q2" value="a" id="q2a"><label for="q2a"> a) Piramida lui Keops</label><br>
+                <input type="radio" name="q2" value="b" id="q2b"><label for="q2b"> b) Piramida lui Khafre</label><br>
+                <input type="radio" name="q2" value="c" id="q2c"><label for="q2c"> c) Piramida lui Menkaure</label><br>
+            </div>
+            <div class="quiz-question" id="q3">
+                <p>3. Ce a cauzat extincția dinozaurilor?</p>
+                <input type="radio" name="q3" value="a" id="q3a"><label for="q3a"> a) Erupții vulcanice</label><br>
+                <input type="radio" name="q3" value="b" id="q3b"><label for="q3b"> b) Impactul unui asteroid</label><br>
+                <input type="radio" name="q3" value="c" id="q3c"><label for="q3c"> c) Schimbări climatice lente</label><br>
+            </div>
+            <div class="quiz-question" id="q4">
+                <p>4. Câți ani are universul conform teoriei Big Bang?</p>
+                <input type="radio" name="q4" value="a" id="q4a"><label for="q4a"> a) 13,8 miliarde</label><br>
+                <input type="radio" name="q4" value="b" id="q4b"><label for="q4b"> b) 4,5 miliarde</label><br>
+                <input type="radio" name="q4" value="c" id="q4c"><label for="q4c"> c) 20 de miliarde</label><br>
+            </div>
+            <div class="quiz-question" id="q5">
+                <p>5. Ce civilizație a construit Chichen Itza?</p>
+                <input type="radio" name="q5" value="a" id="q5a"><label for="q5a"> a) Aztecii</label><br>
+                <input type="radio" name="q5" value="b" id="q5b"><label for="q5b"> b) Mayașii</label><br>
+                <input type="radio" name="q5" value="c" id="q5c"><label for="q5c"> c) Incașii</label><br>
+            </div>
+            <div class="quiz-question" id="q6">
+                <p>6. Ce înălțime avea Piramida lui Keops inițial?</p>
+                <input type="radio" name="q6" value="a" id="q6a"><label for="q6a"> a) 146 metri</label><br>
+                <input type="radio" name="q6" value="b" id="q6b"><label for="q6b"> b) 100 metri</label><br>
+                <input type="radio" name="q6" value="c" id="q6c"><label for="q6c"> c) 200 metri</label><br>
+            </div>
+            <div class="quiz-question" id="q7">
+                <p>7. Ce procent din univers este energie întunecată?</p>
+                <input type="radio" name="q7" value="a" id="q7a"><label for="q7a"> a) 25%</label><br>
+                <input type="radio" name="q7" value="b" id="q7b"><label for="q7b"> b) 5%</label><br>
+                <input type="radio" name="q7" value="c" id="q7c"><label for="q7c"> c) 70%</label><br>
+            </div>
+            <div class="quiz-question" id="q8">
+                <p>8. Ce specie de dinozaur este considerată strămoșul păsărilor?</p>
+                <input type="radio" name="q8" value="a" id="q8a"><label for="q8a"> a) Archaeopteryx</label><br>
+                <input type="radio" name="q8" value="b" id="q8b"><label for="q8b"> b) Tyrannosaurus</label><br>
+                <input type="radio" name="q8" value="c" id="q8c"><label for="q8c"> c) Stegosaurus</label><br>
+            </div>
+            <div class="quiz-question" id="q9">
+                <p>9. Ce a cauzat declinul orașelor mayașe din sud?</p>
+                <input type="radio" name="q9" value="a" id="q9a"><label for="q9a"> a) Invazii străine</label><br>
+                <input type="radio" name="q9" value="b" id="q9b"><label for="q9b"> b) Secete severe</label><br>
+                <input type="radio" name="q9" value="c" id="q9c"><label for="q9c"> c) Epidemii</label><br>
+            </div>
+            <div class="quiz-question" id="q10">
+                <p>10. Ce perioadă a marcat apogeul dinozaurilor?</p>
+                <input type="radio" name="q10" value="a" id="q10a"><label for="q10a"> a) Triasic</label><br>
+                <input type="radio" name="q10" value="b" id="q10b"><label for="q10b"> b) Jurasic</label><br>
+                <input type="radio" name="q10" value="c" id="q10c"><label for="q10c"> c) Cretacic</label><br>
+            </div>
+        </div>
+        <div class="button-container">
+            <button id="next-btn">Trece mai departe</button>
+        </div>
+        <p id="quiz-result"></p>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        const questions = document.querySelectorAll('.quiz-question');
+        let currentQuestion = 0;
+        const nextBtn = document.getElementById('next-btn');
+        const quizResult = document.getElementById('quiz-result');
+        const correctAnswers = ['b', 'a', 'b', 'a', 'b', 'a', 'c', 'a', 'b', 'c'];
+
+        questions[currentQuestion].classList.add('active');
+
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestion < questions.length - 1) {
+                questions[currentQuestion].classList.remove('active');
+                currentQuestion++;
+                questions[currentQuestion].classList.add('active');
+                if (currentQuestion === questions.length - 1) nextBtn.textContent = 'Trimite';
+            } else {
+                let score = 0;
+                questions.forEach((question, index) => {
+                    const selected = question.querySelector('input[type="radio"]:checked');
+                    if (selected && selected.value === correctAnswers[index]) score++;
+                });
+                let message;
+                if (score <= 4) message = "Ar trebui să citești mai atent!";
+                else if (score <= 7) message = "Ai memorizat majoritatea, bravo!";
+                else message = "Ești un geniu al istoriei și științei!";
+                quizResult.textContent = `Ai obținut ${score} din 10. ${message}`;
+                nextBtn.style.display = 'none';
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("click", function(event) {
+                let circle = document.createElement("div");
+                circle.style.position = "absolute";
+                circle.style.width = "50px";
+                circle.style.height = "50px";
+                circle.style.backgroundColor = "rgba(0, 150, 255, 0.5)";
+                circle.style.borderRadius = "50%";
+                circle.style.top = `${event.clientY}px`;
+                circle.style.left = `${event.clientX}px`;
+                circle.style.transform = "translate(-50%, -50%)";
+                circle.style.pointerEvents = "none";
+                circle.style.transition = "transform 0.5s ease-out, opacity 0.5s ease-out";
+                document.body.appendChild(circle);
+                
+                setTimeout(() => {
+                    circle.style.transform = "translate(-50%, -50%) scale(2)";
+                    circle.style.opacity = "0";
+                }, 10);
+                
+                setTimeout(() => {
+                    circle.remove();
+                }, 500);
+            });
+        });
+
+        function createStars() {
+            const numStars = 100;
+            for (let i = 0; i < numStars; i++) {
+                let star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                document.body.appendChild(star);
+            }
+        }
+        createStars();
+    </script>
+</body>
+</html>
